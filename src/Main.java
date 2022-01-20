@@ -96,9 +96,40 @@ public class Main {
                     break;
 
                 case 4:
+                    int chose_4;
+                    do {
+                        chose_1 = helper.getInt("Nhập lựa chọn:\n"
+                                + "[1] Xem danh sách sắp xếp theo tên học sinh.\n"
+                                + "[2] Xem danh sách sắp xếp theo tên môn học.\n"
+                                + "[3] Quay lại.\n"
+                        );
+                        if(chose_1>=1 && chose_1<=3){
+                            break;
+                        }
+                        System.out.println("Bạn phải nhập số nguyên từ 1 đến 3");
+                    } while(true);
+                    if(chose_1==1){
+                        transcriptsController.printListDataByStudentName();
+                    }else if(chose_1==2){
+                        transcriptsController.printListDataBySubjectName();
+                    }else if(chose_1==3){
+                        break;
+                    }
+                    boolean checkContinue_4= helper.askYesNo();
+                    if(checkContinue_4){
+                        break;
+                    } else{run=false;}
+
                     break;
                 case 5:
+                    transcriptsController.printListStudentGPA();
+                    boolean checkContinue_5= helper.askYesNo();
+                    if(checkContinue_5){
+                        break;
+                    } else{run=false;}
+
                     break;
+
                 case 6:
                     run=false;
                     break;

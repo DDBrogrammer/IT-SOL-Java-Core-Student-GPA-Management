@@ -1,19 +1,21 @@
 package repository;
 
+import controller.TranscriptsController;
+import entity.*;
 import entity.Transcripts;
-import entity.Transcripts;
-import entity.Transcripts;
-import entity.Transcripts;
+
 
 import java.io.*;
 
 public class TranscriptsDAO implements DataAccessible<Transcripts,Integer> {
-    private final File TRANSCRIPTS_DATA_FILE= new File("TranscriptData.txt");
+    private final File TRANSCRIPTS_DATA_FILE= new File("TranscriptsData.txt");
+
     @Override
     public boolean save(Transcripts transcripts) {
+        int studentId=transcripts.getStudent().getId();
         boolean checkSave = false;
         Transcripts[] tempTranscriptList=new Transcripts[1];
-        tempTranscriptList[0]= new Transcripts(transcripts.getStudent(),transcripts.getSubjectList(), transcripts.getMarkList());
+        tempTranscriptList[0]= transcripts;
         if(TRANSCRIPTS_DATA_FILE.length()==0){
             try {
                 FileOutputStream f = new FileOutputStream(TRANSCRIPTS_DATA_FILE);
@@ -36,11 +38,12 @@ public class TranscriptsDAO implements DataAccessible<Transcripts,Integer> {
             }
         }else{
             try {
+                System.out.println(transcripts.getStudent().toString());
                 FileInputStream fi = new FileInputStream(TRANSCRIPTS_DATA_FILE);
                 ObjectInputStream oi = new ObjectInputStream(fi);
                 // Read objects
                 Transcripts[] fileTranscriptListData = (Transcripts[]) oi.readObject();
-                if(getById(transcripts.getStudent().getId()).getStudent().getId()!=transcripts.getStudent().getId()){
+                if(getById(studentId).getStudent().getId()!=transcripts.getStudent().getId()){
                     Transcripts[] newInputStudentListData=new Transcripts[fileTranscriptListData.length+1];
                     for (int i=0;i<newInputStudentListData.length-1;i++){
                         newInputStudentListData[i]=new Transcripts(
@@ -57,12 +60,13 @@ public class TranscriptsDAO implements DataAccessible<Transcripts,Integer> {
                     deleteAll();
                     FileOutputStream f = new FileOutputStream(TRANSCRIPTS_DATA_FILE);
                     ObjectOutputStream o = new ObjectOutputStream(f);
+                    System.out.println(newInputStudentListData.length);
                     o.writeObject(newInputStudentListData);
                     o.flush();
                     o.close();
                     checkSave = true;
                 }else{
-                    for (int i=0;i<fileTranscriptListData.length-1;i++){
+                    for (int i=0;i<fileTranscriptListData.length;i++){
                         if(fileTranscriptListData[i].getStudent().getId()== transcripts.getStudent().getId()
                         ){
                             fileTranscriptListData[i]=new Transcripts(
@@ -76,6 +80,7 @@ public class TranscriptsDAO implements DataAccessible<Transcripts,Integer> {
                     deleteAll();
                     FileOutputStream f = new FileOutputStream(TRANSCRIPTS_DATA_FILE);
                     ObjectOutputStream o = new ObjectOutputStream(f);
+
                     o.writeObject(fileTranscriptListData);
                     o.flush();
                     o.close();
@@ -131,11 +136,8 @@ public class TranscriptsDAO implements DataAccessible<Transcripts,Integer> {
                 resultSubjectList=new Transcripts[fileStudentList.length];
 
                 for(int i=0;i<resultSubjectList.length;i++){
-                    resultSubjectList[i]=new Transcripts(
-                            fileStudentList[i].getStudent(),
-                            fileStudentList[i].getSubjectList(),
-                            fileStudentList[i].getMarkList()
-                    );
+                    resultSubjectList[i]=fileStudentList[i];
+
                 }
                 oi.close();
                 fi.close();
@@ -162,8 +164,9 @@ public class TranscriptsDAO implements DataAccessible<Transcripts,Integer> {
                 transcripts1=new Transcripts(transcripts[i].getStudent(),
                         transcripts[i].getSubjectList(),
                         transcripts[i].getMarkList());
+                return transcripts1;
             }
         }
-        return transcripts1;
+        return getAll()[0];
     }
 }

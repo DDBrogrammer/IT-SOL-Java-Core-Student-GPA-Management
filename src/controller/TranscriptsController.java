@@ -80,11 +80,15 @@ public class TranscriptsController {
             }while(true);
         }
         Transcripts transcripts=new Transcripts(student,subjectList,markList);
+        Transcripts[] transcriptsList=new Transcripts[1];
+        transcriptsList[0]=transcripts;
+        printListData(transcriptsList);
         transcriptsDAO.save(transcripts);
 
     }
     public void printListData(){
         Transcripts[] transcripts= transcriptsDAO.getAll();
+        System.out.println(transcripts.length);
         for (int i=0;i<transcripts.length;i++){
             System.out.println("                            ");
             System.out.println(transcripts[i].getStudent().toString());
@@ -94,4 +98,71 @@ public class TranscriptsController {
             System.out.println("                            ");
         }
     }
+    public void printListData(Transcripts[] transcripts){
+
+        for (int i=0;i<transcripts.length;i++){
+            System.out.println("                            ");
+            System.out.println(transcripts[i].getStudent().toString());
+            for(int j=0;j<transcripts[i].getSubjectList().length;j++){
+                System.out.println("Môn học: "+transcripts[i].getSubjectList()[j]+" Điểm số: "+transcripts[i].getMarkList()[j]);
+            }
+            System.out.println("                            ");
+        }
+    }
+    public void printListDataByStudentName(){
+        Transcripts[] transcriptsList=transcriptsDAO.getAll();
+        Transcripts temp = new Transcripts();
+        for (int i = 0; i < transcriptsList.length - 1; i++) {
+            for (int j = i + 1; j < transcriptsList.length; j++) {
+                if (transcriptsList[i].getStudent().getName().compareTo(transcriptsList[j].getStudent().getName()) > 0) {
+                    temp = transcriptsList[i];
+                    transcriptsList[i] = transcriptsList[j];
+                    transcriptsList[j] = temp;
+                }
+            }
+        }
+        System.out.println("Danh sách sau khi sắp xếp là :");
+        printListData(transcriptsList);
+}
+    public void printListDataBySubjectName(){
+        Transcripts[] transcriptsList=transcriptsDAO.getAll();
+        int tempMark=0;
+        Subject tempSubject=new Subject();
+        for (int i = 0; i < transcriptsList.length - 1; i++) {
+            if(transcriptsList[i].getSubjectList().length>1){
+                for(int u=0;u<transcriptsList.length-1;u++){
+                        for (int t=u+1;u< transcriptsList.length;t++){
+                            if(transcriptsList[i].getSubjectList()[u].getName().compareTo(transcriptsList[i].getSubjectList()[t].getName())>0){
+                                tempSubject=transcriptsList[i].getSubjectList()[u];
+                                transcriptsList[i].getSubjectList()[u]=transcriptsList[i].getSubjectList()[t];
+                                transcriptsList[i].getSubjectList()[t]=tempSubject;
+                                tempMark=transcriptsList[i].getMarkList()[u];
+                                transcriptsList[i].getMarkList()[u]=transcriptsList[i].getMarkList()[t];
+                                transcriptsList[i].getMarkList()[t]=tempMark;
+                            }
+                        }
+                }
+            }
+        }
+        System.out.println("Danh sách sau khi sắp xếp là :");
+        printListData(transcriptsList);
+    }
+    public void printListStudentGPA(){
+        Transcripts[] transcripts= transcriptsDAO.getAll();
+        System.out.println(transcripts.length);
+        for (int i=0;i<transcripts.length;i++){
+            System.out.println("                            ");
+            System.out.println(transcripts[i].getStudent().toString());
+            System.out.println("Điểm GPA: "+ calculateGPA(transcripts[i].getMarkList()));
+            System.out.println("                            ");
+        }
+    }
+    private float calculateGPA(int[] markList){
+        int total=0;
+        for(int i=0;i<markList.length;i++){
+            total=total+markList[i];
+        }
+        return (float)total/markList.length;
+    }
+
 }
