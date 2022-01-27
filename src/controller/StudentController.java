@@ -57,4 +57,19 @@ public class StudentController {
            System.out.println(students[i].toString());
        }
     }
+    public  int  studentAskChose(){
+        int chose;
+        do {
+            chose = helper.getInt("Nhập lựa chọn:\n"
+                    + "[1] Thêm sinh viên.\n"
+                    + "[2] Xem danh sách sinh viên.\n"
+                    + "[3] Quay lại.\n"
+            );
+            if(chose>=1 && chose<=3){
+                break;
+            }
+            System.out.println("Bạn phải nhập số nguyên từ 1 đến 3");
+        } while(true);
+        return chose;
+    }
 }

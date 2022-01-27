@@ -60,4 +60,19 @@ public class SubjectController {
             System.out.println(subjects[i].toString());
         }
     }
+    public  int  subjectAskChose(){
+        int chose;
+        do {
+            chose = helper.getInt("Nhập lựa chọn:\n"
+                    + "[1] Thêm môn học.\n"
+                    + "[2] Xem danh sách môn học.\n"
+                    + "[3] Quay lại.\n"
+            );
+            if(chose>=1 && chose<=3){
+                break;
+            }
+            System.out.println("Bạn phải nhập số nguyên từ 1 đến 3");
+        } while(true);
+        return chose;
+    }
 }

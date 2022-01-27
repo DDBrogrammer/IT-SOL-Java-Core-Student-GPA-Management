@@ -25,12 +25,6 @@ public class ValidateStudent {
             return true;}
     }
 
-   /* public  boolean checkName(String name){
-        return ((!name.equals(""))
-                && (name != null)
-                && (name.matches(NAME_REGEX)));
-    }
-*/
     public Boolean validatePhone(String phone) {
         Pattern p = Pattern.compile(PHONE_NUMBER_REGEX);
         Matcher m = p.matcher(phone);
@@ -66,12 +60,12 @@ public class ValidateStudent {
 
     public Boolean validateCollegeClass(String collegeClass){
         if(collegeClass.length() == 0){
-            System.out.println("Bạn chưa nhập địa chỉ ");
+            System.out.println("Bạn chưa nhập lớp ");
             return false;
         }else if(
                 collegeClass.length()>=250
         )  {
-            System.out.println("Địa chỉ quá dài ");
+            System.out.println("Tên lớp quá dài ");
             return  false;
         } else {
             return true;}

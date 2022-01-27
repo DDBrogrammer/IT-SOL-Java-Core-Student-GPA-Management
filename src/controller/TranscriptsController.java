@@ -17,7 +17,6 @@ public class TranscriptsController {
       private  StudentDAO studentDAO=new StudentDAO();
       private TranscriptsDAO transcriptsDAO=new TranscriptsDAO();
       private  Helper helper=new Helper();
-      private ValidateStudent validateStudent=new ValidateStudent();
       private ValidateTranscripts validateTranscripts=new ValidateTranscripts();
     public void getInputEntity() {
        Student student=new Student("","","",0,"");
@@ -165,4 +164,36 @@ public class TranscriptsController {
         return (float)total/markList.length;
     }
 
+
+    public  int  transcriptsAskChose(){
+        int chose;
+        do {
+            chose = helper.getInt("Nhập lựa chọn:\n"
+                    + "[1] Thêm bảng điểm.\n"
+                    + "[2] Xem danh sách bảng điểm.\n"
+                    + "[3] Quay lại.\n"
+            );
+            if(chose>=1 && chose<=3){
+                break;
+            }
+            System.out.println("Bạn phải nhập số nguyên từ 1 đến 3");
+        } while(true);
+        return chose;
+    }
+
+    public  int sortStudentListAskChose(){
+        int chose;
+        do {
+            chose = helper.getInt("Nhập lựa chọn:\n"
+                    + "[1] Thêm bảng điểm.\n"
+                    + "[2] Xem danh sách bảng điểm.\n"
+                    + "[3] Quay lại.\n"
+            );
+            if(chose>=1 && chose<=3){
+                break;
+            }
+            System.out.println("Bạn phải nhập số nguyên từ 1 đến 3");
+        } while(true);
+        return chose;
+    }
 }
